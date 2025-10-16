@@ -11,9 +11,8 @@ export const osBuildInfos: { [key in os]: { name: string; extensions: string[]; 
     name: 'macOS',
     extensions: ['dmg'],
     information: `After installation, enter the command below in bash.
-(Note: you should enter this every time you update sledge.)
 
-> xattr -rc /Applications/sledge.app`,
+xattr -rc /Applications/sledge.app`,
   },
   linux: {
     name: 'Linux',
@@ -25,7 +24,7 @@ export const osBuildInfos: { [key in os]: { name: string; extensions: string[]; 
   sp: {
     name: 'sp',
     extensions: [],
-    information: 'Mobile builds are not available yet.',
+    information: undefined,
   },
   none: {
     name: 'None',
