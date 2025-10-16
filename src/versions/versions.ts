@@ -16,10 +16,9 @@ xattr -rc /Applications/sledge.app`,
   },
   linux: {
     name: 'Linux',
-    extensions: ['rpm', 'AppImage', 'deb'],
-    information: `.deb       for Debian-based distros (e.g., Ubuntu)
-.rpm       for Red Hat-based distros (e.g., Fedora, CentOS)
-.AppImage  for portable applications`,
+    extensions: ['rpm', 'deb'],
+    information: `.deb: for Debian-based distros (like Ubuntu)
+.rpm: for Red Hat-based distros (like Fedora, CentOS)`,
   },
   sp: {
     name: 'sp',
