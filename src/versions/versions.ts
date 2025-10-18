@@ -1,7 +1,9 @@
 import type { ReleaseData } from './Release';
 
 export type os = 'sp' | 'macOS' | 'windows' | 'linux' | 'none';
-export const osBuildInfos: { [key in os]: { name: string; extensions: string[]; information?: string } } = {
+export const osBuildInfos: {
+  [key in os]: { name: string; extensions: string[]; information?: string; extensionLabels?: { [ext: string]: string } };
+} = {
   windows: {
     name: 'Windows',
     extensions: ['exe'],
@@ -17,8 +19,12 @@ xattr -rc /Applications/sledge.app`,
   linux: {
     name: 'Linux',
     extensions: ['rpm', 'deb'],
-    information: `.deb: for Debian-based distros (like Ubuntu)
-.rpm: for Red Hat-based distros (like Fedora, CentOS)`,
+    // information: `.deb: for Debian-based distros (like Ubuntu)
+    // .rpm: for Red Hat-based distros (like Fedora, CentOS)`,
+    extensionLabels: {
+      rpm: 'Fedora / CentOS',
+      deb: 'Ubuntu / Linux Mint',
+    },
   },
   sp: {
     name: 'sp',
