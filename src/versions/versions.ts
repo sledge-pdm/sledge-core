@@ -337,7 +337,6 @@ const debugResponce = `{
 
 export const getDebugReleaseData = (): ReleaseData => {
   const json = JSON.parse(debugResponce);
-  console.log(json);
   return json as ReleaseData;
 };
 // client side
