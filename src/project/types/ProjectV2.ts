@@ -65,11 +65,6 @@ interface SerializedHistoryAction {
   props: BaseHistoryActionProps;
 }
 
-type LayerHistoryStacks = {
-  undoStack: DeflatedHistorySnapshot[];
-  redoStack: DeflatedHistorySnapshot[];
-};
-
 type DeflatedHistorySnapshot = {
   bounds: { x: number; y: number; width: number; height: number };
   size: { width: number; height: number };
@@ -141,7 +136,13 @@ export interface ProjectV2 extends ProjectBase {
   history: {
     undoStack: SerializedHistoryAction[];
     redoStack: SerializedHistoryAction[];
-    layerHistories?: Record<string, LayerHistoryStacks>;
+    layerHistories?: Record<
+      string,
+      {
+        undoStack: DeflatedHistorySnapshot[];
+        redoStack: DeflatedHistorySnapshot[];
+      }
+    >;
   };
   snapshots: ProjectSnapshot[];
 }
