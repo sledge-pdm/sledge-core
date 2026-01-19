@@ -59,6 +59,7 @@ export class V2Adapter extends ProjectAdapter<ProjectV2> {
     return {
       undoStack: this.project.history.undoStack,
       redoStack: this.project.history.redoStack,
+      layerHistories: this.project.history.layerHistories,
     };
   }
 

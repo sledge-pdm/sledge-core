@@ -65,6 +65,18 @@ interface SerializedHistoryAction {
   props: BaseHistoryActionProps;
 }
 
+type LayerHistoryStacks = {
+  undoStack: DeflatedHistorySnapshot[];
+  redoStack: DeflatedHistorySnapshot[];
+};
+
+type DeflatedHistorySnapshot = {
+  bounds: { x: number; y: number; width: number; height: number };
+  size: { width: number; height: number };
+  deflated: Uint8Array;
+  fullLayer?: boolean;
+};
+
 type ImagePoolEntry = {
   id: string;
   base: { width: number; height: number };
@@ -129,6 +141,7 @@ export interface ProjectV2 extends ProjectBase {
   history: {
     undoStack: SerializedHistoryAction[];
     redoStack: SerializedHistoryAction[];
+    layerHistories?: Record<string, LayerHistoryStacks>;
   };
   snapshots: ProjectSnapshot[];
 }
