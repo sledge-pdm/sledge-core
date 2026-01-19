@@ -6,5 +6,4 @@ export type LayerListState = {
   activeLayerId: string;
   selectionEnabled: boolean;
   selected: Set<string>;
-  isImagePoolActive: boolean;
 };

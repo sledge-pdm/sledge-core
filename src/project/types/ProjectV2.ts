@@ -108,7 +108,6 @@ export interface ProjectV2 extends ProjectBase {
       activeLayerId: string;
       selectionEnabled: boolean;
       selected: Set<string>;
-      isImagePoolActive: boolean;
     };
   };
   project: {
