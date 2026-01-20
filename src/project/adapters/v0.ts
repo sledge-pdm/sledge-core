@@ -38,7 +38,7 @@ export class V0Adapter extends ProjectAdapter<ProjectV0> {
     });
   }
 
-  getRawBufferOf(layerId: string): Uint8ClampedArray | undefined {
+  async getRawBufferOf(layerId: string): Promise<Uint8ClampedArray | undefined> {
     return this.project.layerBuffers.get(layerId);
   }
 
@@ -95,7 +95,7 @@ export class V0Adapter extends ProjectAdapter<ProjectV0> {
     };
   }
 
-  getSnapshots(): SnapshotsPart {
+  async getSnapshots(): Promise<SnapshotsPart> {
     return [];
   }
 }

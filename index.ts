@@ -1,7 +1,6 @@
 // buffer
 export * from './src/buffer/gzip';
 export * from './src/buffer/RawPixelData';
-export * from './src/buffer/webp';
 
 // color
 export * from './src/color/RGBA';

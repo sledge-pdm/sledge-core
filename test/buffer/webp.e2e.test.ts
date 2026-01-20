@@ -1,12 +1,12 @@
 import { readFile } from 'node:fs/promises';
 import { describe, expect, it } from 'vitest';
-import { decodeWebp } from '../../index';
+import { decodeWebp } from '../../src/buffer/webp';
 
 describe('webp e2e', () => {
   it('decodes a real webp fixture', async () => {
     const fixtureUrl = new URL('./test.webp', import.meta.url);
     const buffer = await readFile(fixtureUrl);
-    const decoded = decodeWebp(buffer, 16, 16);
+    const decoded = await decodeWebp(buffer, 16, 16);
 
     expect(decoded).toBeInstanceOf(Uint8ClampedArray);
     expect(decoded.byteLength).toBeGreaterThan(0);

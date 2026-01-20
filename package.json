@@ -31,11 +31,10 @@
   },
   "scripts": {
     "dev": "",
-    "build": "pnpm run wasm:build && pnpm exec tsc -p tsconfig.build.json && pnpm exec tsc-alias -p tsconfig.build.json && node ./scripts/copy-wasm.mjs",
+    "build": "pnpm exec tsc -p tsconfig.build.json && pnpm exec tsc-alias -p tsconfig.build.json",
     "prettier": "prettier --write . --config .prettierrc",
     "format": "pnpm prettier",
-    "test": "vitest run -c ./vitest.config.ts",
-    "wasm:build": "cd src/wasm && pnpm --ignore-workspace i && wasm-pack build --target bundler && rm pkg/.gitignore && rm pkg/package.json"
+    "test": "vitest run -c ./vitest.config.ts"
   },
   "files": [
     "dist"

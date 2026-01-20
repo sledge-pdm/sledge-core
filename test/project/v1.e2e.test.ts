@@ -32,7 +32,7 @@ describe('v0 project io', () => {
     expect(image0?.deflatedBuffer).toBeDefined();
     if (image0?.deflatedBuffer) {
       const inflated = gzipInflate(image0.deflatedBuffer);
-      const inflatedRaw = decodeWebp(inflated, entry0.base.width, entry0.base.height);
+      const inflatedRaw = await decodeWebp(inflated, entry0.base.width, entry0.base.height);
       expect(inflatedRaw.length).toBe(entry0.base.width * entry0.base.height * 4);
     }
   });
@@ -56,8 +56,9 @@ describe('v0 project io', () => {
 
     expect(adapter.getHistory().undoStack.length).toBe(50);
 
-    expect(adapter.getSnapshots().length).toBe(2);
-    const snapshot0 = adapter.getSnapshots()[0];
+    const snapshots = await adapter.getSnapshots();
+    expect(snapshots.length).toBe(2);
+    const snapshot0 = snapshots[0];
     expect(snapshot0.name).toBe('2025/10/21 18:01:40');
 
     const snapshot0Adapter = getProjectAdapter(snapshot0.snapshot);

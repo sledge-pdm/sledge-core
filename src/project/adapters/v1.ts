@@ -24,14 +24,14 @@ export class V1Adapter extends ProjectAdapter<ProjectV1> {
     return this.project.layers.store.layers;
   }
 
-  getRawBufferOf(layerId: string): Uint8ClampedArray | undefined {
+  async getRawBufferOf(layerId: string): Promise<Uint8ClampedArray | undefined> {
     const buffer = this.project.layers.buffers.get(layerId);
     if (!buffer) return undefined;
 
     const canvasSize = this.project.canvas.store.canvas;
     if (!canvasSize) return undefined;
 
-    return decodeWebp(buffer.webpBuffer, canvasSize.width, canvasSize.height);
+    return await decodeWebp(buffer.webpBuffer, canvasSize.width, canvasSize.height);
   }
 
   getLayerListState(): LayerListState {
@@ -73,26 +73,28 @@ export class V1Adapter extends ProjectAdapter<ProjectV1> {
     };
   }
 
-  getSnapshots(): SnapshotsPart {
-    return this.project.snapshots.store.snapshots.map((v1Snap) => {
-      if (v1Snap.thumbnail) {
-        const { webpBuffer, width, height } = v1Snap.thumbnail;
-        const rawThumbnailBuffer = decodeWebp(webpBuffer, width, height);
-        const deflated = toUint8Array(gzipDeflate(rawThumbnailBuffer));
-        return {
-          ...v1Snap,
-          thumbnail: {
-            packedBuffer: deflated,
-            width,
-            height,
-          },
-        } as ProjectSnapshot;
-      } else {
-        return {
-          ...v1Snap,
-          thumbnail: undefined,
-        };
-      }
-    });
+  async getSnapshots(): Promise<SnapshotsPart> {
+    return Promise.all(
+      this.project.snapshots.store.snapshots.map(async (v1Snap) => {
+        if (v1Snap.thumbnail) {
+          const { webpBuffer, width, height } = v1Snap.thumbnail;
+          const rawThumbnailBuffer = await decodeWebp(webpBuffer, width, height);
+          const deflated = toUint8Array(gzipDeflate(rawThumbnailBuffer));
+          return {
+            ...v1Snap,
+            thumbnail: {
+              packedBuffer: deflated,
+              width,
+              height,
+            },
+          } as ProjectSnapshot;
+        } else {
+          return {
+            ...v1Snap,
+            thumbnail: undefined,
+          };
+        }
+      })
+    );
   }
 }
