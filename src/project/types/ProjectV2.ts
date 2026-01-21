@@ -1,7 +1,5 @@
 import { Size2D } from '../../types/Size';
 import { ProjectBase } from './base';
-import { ProjectV0 } from './ProjectV0';
-import { ProjectV1 } from './ProjectV1';
 
 enum LayerType {
   Base,
@@ -87,7 +85,10 @@ interface ProjectSnapshot {
   name: string;
   description?: string;
   createdAt: number;
-  snapshot: ProjectV0 | ProjectV1 | ProjectV2;
+  project: ProjectBase;
+  snapshot?: ProjectBase; // legacy V2
+  projectVersion?: number;
+  canvasSize?: Size2D;
   thumbnail?: {
     packedBuffer: Uint8Array;
     width: number;

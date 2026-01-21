@@ -61,7 +61,7 @@ describe('v0 project io', () => {
     const snapshot0 = snapshots[0];
     expect(snapshot0.name).toBe('2025/10/21 18:01:40');
 
-    const snapshot0Adapter = getProjectAdapter(snapshot0.snapshot);
+    const snapshot0Adapter = getProjectAdapter(snapshot0.project);
     expect(snapshot0Adapter?.getCanvasInfo().size.width).toBe(704);
     expect(snapshot0Adapter?.getCanvasInfo().size.height).toBe(1197);
   });

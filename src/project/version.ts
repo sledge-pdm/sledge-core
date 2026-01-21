@@ -8,7 +8,7 @@ import { ProjectV1 } from './types/ProjectV1';
 import { ProjectV2 } from './types/ProjectV2';
 
 export function getProjectVersion(project: ProjectBase): number {
-  const projectVersion: number | undefined = project.projectVersion;
+  const projectVersion: number | undefined = project?.projectVersion;
 
   if (projectVersion === undefined) {
     return 0;

@@ -21,8 +21,8 @@ export abstract class ProjectAdapter<P extends ProjectBase> {
     project?: number;
   } {
     return {
-      sledge: this.project.version ?? undefined,
-      project: this.project.projectVersion ?? undefined,
+      sledge: this.project?.version ?? undefined,
+      project: this.project?.projectVersion ?? undefined,
     };
   }
 

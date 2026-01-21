@@ -47,12 +47,14 @@ export class V1Adapter extends ProjectAdapter<ProjectV1> {
   }
 
   getImagePoolEntries(): ImagePoolEntry[] {
-    const entries = this.project.imagePool.store.entries;
+    const entries = this.project.imagePool?.store?.entries;
     return Array.isArray(entries) ? entries : [];
   }
 
   getImagePoolImageOf(entryId: string): ImagePoolImage | undefined {
-    const entry = this.project.imagePool.store.entries.find((e) => e.id === entryId);
+    const entries = this.project.imagePool?.store?.entries;
+    if (!entries) return undefined;
+    const entry = entries.find((e) => e.id === entryId);
     if (!entry) return undefined;
     return {
       deflatedBuffer: gzipDeflate(entry.webpBuffer),
@@ -80,8 +82,10 @@ export class V1Adapter extends ProjectAdapter<ProjectV1> {
           const { webpBuffer, width, height } = v1Snap.thumbnail;
           const rawThumbnailBuffer = await decodeWebp(webpBuffer, width, height);
           const deflated = toUint8Array(gzipDeflate(rawThumbnailBuffer));
+          const { snapshot: oldSnapshot, ...v1SnapRest } = v1Snap;
           return {
-            ...v1Snap,
+            ...v1SnapRest,
+            project: oldSnapshot,
             thumbnail: {
               packedBuffer: deflated,
               width,
@@ -89,8 +93,10 @@ export class V1Adapter extends ProjectAdapter<ProjectV1> {
             },
           } as ProjectSnapshot;
         } else {
+          const { snapshot: oldSnapshot, ...v1SnapRest } = v1Snap;
           return {
-            ...v1Snap,
+            ...v1SnapRest,
+            project: oldSnapshot,
             thumbnail: undefined,
           };
         }

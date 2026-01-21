@@ -46,7 +46,8 @@ export class V2Adapter extends ProjectAdapter<ProjectV2> {
   }
 
   getImagePoolImageOf(entryId: string): ImagePoolImage | undefined {
-    return this.project.imagePool.images.get(entryId);
+    const images = this.project.imagePool?.images;
+    return images ? images.get(entryId) : undefined;
   }
 
   getImagePoolState(): ImagePoolState {
@@ -64,6 +65,9 @@ export class V2Adapter extends ProjectAdapter<ProjectV2> {
   }
 
   async getSnapshots(): Promise<SnapshotsPart> {
-    return this.project.snapshots;
+    return this.project.snapshots.map((s) => {
+      if (!s.project && s.snapshot) return { ...s, project: s.snapshot, snapshot: undefined };
+      else return s;
+    });
   }
 }
