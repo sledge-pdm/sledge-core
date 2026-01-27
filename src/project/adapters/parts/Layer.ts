@@ -20,7 +20,6 @@ export type Layer = {
   id: string;
   name: string;
   type: LayerType;
-  typeDescription: string;
   opacity: number;
   mode: BlendMode;
   enabled: boolean;
