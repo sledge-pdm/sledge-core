@@ -23,7 +23,6 @@ interface Layer {
   id: string;
   name: string;
   type: LayerType;
-  typeDescription: string;
   opacity: number;
   mode: BlendMode;
   enabled: boolean;
