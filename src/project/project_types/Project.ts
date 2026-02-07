@@ -1,4 +1,4 @@
-export interface ProjectPart {
+export interface ProjectInfo {
   thumbnailPath: string | undefined;
   lastSavedPath: string | undefined;
   lastSavedAt: Date | undefined;

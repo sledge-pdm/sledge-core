@@ -1,12 +1,12 @@
+import { ProjectInfo, Selection } from '../project_types';
+import { CanvasInfo } from '../project_types/Canvas';
+import { HistoryStacks } from '../project_types/History';
+import type { ImagePoolEntry, ImagePoolImage, ImagePoolState } from '../project_types/ImagePool';
+import { Layer } from '../project_types/Layer';
+import { LayerListState } from '../project_types/LayerListState';
+import { SnapshotsPart } from '../project_types/Snapshots';
 import { ProjectV0 } from '../types/ProjectV0';
 import { ProjectAdapter } from './base';
-import { Canvas } from './parts/Canvas';
-import { HistoryStacks } from './parts/History';
-import { ImagePoolEntry, ImagePoolImage, ImagePoolState } from './parts/ImagePool';
-import { Layer } from './parts/Layer';
-import { LayerListState } from './parts/LayerListState';
-import { ProjectPart } from './parts/Project';
-import { SnapshotsPart } from './parts/Snapshots';
 
 export class V0Adapter extends ProjectAdapter<ProjectV0> {
   ADAPTER_PROJECT_VERSION = 0;
@@ -23,7 +23,7 @@ export class V0Adapter extends ProjectAdapter<ProjectV0> {
     };
   }
 
-  getCanvasInfo(): Canvas {
+  getCanvasInfo(): CanvasInfo {
     return {
       size: this.project.canvasStore.canvas,
     };
@@ -38,6 +38,12 @@ export class V0Adapter extends ProjectAdapter<ProjectV0> {
     });
   }
 
+  getSelection(): Selection {
+    return {
+      mask: undefined,
+    };
+  }
+
   async getRawBufferOf(layerId: string): Promise<Uint8ClampedArray | undefined> {
     return this.project.layerBuffers.get(layerId);
   }
@@ -50,7 +56,7 @@ export class V0Adapter extends ProjectAdapter<ProjectV0> {
     };
   }
 
-  getProjectInfo(): ProjectPart {
+  getProjectInfo(): ProjectInfo {
     return {
       ...this.project.projectStore,
       lastSavedPath: undefined,

@@ -1,4 +1,5 @@
 import { Size2D } from '../../types/Size';
+import { HistoryStacks } from '../project_types';
 import { ProjectBase } from './base';
 import { ProjectV0 } from './ProjectV0';
 
@@ -48,29 +49,6 @@ type ImagePoolEntry = {
   opacity: number;
   visible: boolean;
 };
-
-type HistoryActionTypes =
-  | 'canvas_size'
-  | 'color'
-  | 'convert_selection'
-  | 'image_pool'
-  | 'layer_buffer'
-  | 'layer_list'
-  | 'layer_list_reorder'
-  | 'layer_list_cut_paste'
-  | 'layer_merge'
-  | 'layer_props'
-  | 'unknown';
-
-interface BaseHistoryActionProps {
-  context?: any;
-  label?: string;
-}
-
-interface SerializedHistoryAction {
-  type: HistoryActionTypes;
-  props: BaseHistoryActionProps;
-}
 
 /**
  *  @deprecated ProjectV1 was used in sledge <= 0.1.5.
@@ -125,8 +103,8 @@ export interface ProjectV1 extends ProjectBase {
     };
   };
   history: {
-    undoStack: SerializedHistoryAction[];
-    redoStack: SerializedHistoryAction[];
+    undoStack: HistoryStacks['undoStack'];
+    redoStack: HistoryStacks['redoStack'];
   };
   snapshots: {
     store: {

@@ -1,5 +1,5 @@
-import { Size2D } from '../../../types/Size';
-import { ProjectBase } from '../../types';
+import { Size2D } from '../../types/Size';
+import { ProjectBase } from '../types';
 
 export interface ProjectSnapshot {
   id: string;
@@ -7,6 +7,7 @@ export interface ProjectSnapshot {
   description?: string;
   createdAt: number;
   project: ProjectBase;
+  snapshot?: ProjectBase; // legacy V2
   projectVersion?: number;
   canvasSize?: Size2D;
   thumbnail?: {

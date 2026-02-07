@@ -1,20 +1,21 @@
 import { gzipDeflate } from '../../buffer/gzip';
 import { toUint8Array } from '../../buffer/RawPixelData';
 import { decodeWebp } from '../../buffer/webp';
+import { Selection } from '../project_types';
+import { CanvasInfo } from '../project_types/Canvas';
+import { HistoryStacks } from '../project_types/History';
+import type { ImagePoolEntry, ImagePoolImage, ImagePoolState } from '../project_types/ImagePool';
+import { Layer } from '../project_types/Layer';
+import { LayerListState } from '../project_types/LayerListState';
+import { ProjectInfo } from '../project_types/Project';
+import { ProjectSnapshot, SnapshotsPart } from '../project_types/Snapshots';
 import { ProjectV1 } from '../types/ProjectV1';
 import { ProjectAdapter } from './base';
-import { Canvas } from './parts/Canvas';
-import { HistoryStacks } from './parts/History';
-import { ImagePoolEntry, ImagePoolImage, ImagePoolState } from './parts/ImagePool';
-import { Layer } from './parts/Layer';
-import { LayerListState } from './parts/LayerListState';
-import { ProjectPart } from './parts/Project';
-import { ProjectSnapshot, SnapshotsPart } from './parts/Snapshots';
 
 export class V1Adapter extends ProjectAdapter<ProjectV1> {
   ADAPTER_PROJECT_VERSION = 1;
 
-  getCanvasInfo(): Canvas {
+  getCanvasInfo(): CanvasInfo {
     return {
       size: this.project.canvas.store.canvas,
     };
@@ -40,7 +41,13 @@ export class V1Adapter extends ProjectAdapter<ProjectV1> {
     };
   }
 
-  getProjectInfo(): ProjectPart {
+  getSelection(): Selection {
+    return {
+      mask: undefined,
+    };
+  }
+
+  getProjectInfo(): ProjectInfo {
     return {
       ...this.project.project.store,
     };
