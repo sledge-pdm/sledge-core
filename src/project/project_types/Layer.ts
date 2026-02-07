@@ -1,11 +1,11 @@
-enum LayerType {
+export enum LayerType {
   Base,
   Dot,
   Image,
   Automate,
 }
 
-enum BlendMode {
+export enum BlendMode {
   normal = 'Normal',
   multiply = 'Multiply',
   screen = 'Screen',
