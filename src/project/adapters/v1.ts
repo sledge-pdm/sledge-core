@@ -22,7 +22,17 @@ export class V1Adapter extends ProjectAdapter<ProjectV1> {
   }
 
   getLayers(): Layer[] {
-    return this.project.layers.store.layers;
+    return this.project.layers.store.layers.map((layer) => {
+      return {
+        id: layer.id,
+        name: layer.name,
+        type: layer.type,
+        opacity: layer.opacity,
+        mode: layer.mode,
+        enabled: layer.enabled,
+        cutFreeze: layer.cutFreeze ?? false,
+      };
+    });
   }
 
   async getRawBufferOf(layerId: string): Promise<Uint8ClampedArray | undefined> {
@@ -36,8 +46,15 @@ export class V1Adapter extends ProjectAdapter<ProjectV1> {
   }
 
   getLayerListState(): LayerListState {
+    const layerStore = this.project.layers.store;
     return {
-      ...this.project.layers.store,
+      baseLayer: {
+        colorMode: layerStore.baseLayer?.colorMode ?? 'transparent',
+        customColor: layerStore.baseLayer?.customColor ?? undefined,
+      },
+      activeLayerId: layerStore.activeLayerId ?? '',
+      selectionEnabled: layerStore.selectionEnabled ?? false,
+      selected: layerStore.selected ?? new Set<string>(),
     };
   }
 
@@ -48,8 +65,13 @@ export class V1Adapter extends ProjectAdapter<ProjectV1> {
   }
 
   getProjectInfo(): ProjectInfo {
+    const projectStore = this.project.project.store;
     return {
-      ...this.project.project.store,
+      thumbnailPath: projectStore.thumbnailPath ?? undefined,
+      lastSavedPath: projectStore.lastSavedPath ?? undefined,
+      lastSavedAt: projectStore.lastSavedAt ?? undefined,
+      autoSnapshotEnabled: projectStore.autoSnapshotEnabled ?? false,
+      autoSnapshotInterval: projectStore.autoSnapshotInterval ?? 60,
     };
   }
 
@@ -70,8 +92,10 @@ export class V1Adapter extends ProjectAdapter<ProjectV1> {
   }
 
   getImagePoolState(): ImagePoolState {
+    const imagePoolStore = this.project.imagePool.store;
     return {
-      ...this.project.imagePool.store,
+      selectedEntryId: imagePoolStore.selectedEntryId ?? undefined,
+      preserveAspectRatio: imagePoolStore.preserveAspectRatio ?? true,
     };
   }
 
@@ -85,14 +109,20 @@ export class V1Adapter extends ProjectAdapter<ProjectV1> {
   async getSnapshots(): Promise<SnapshotsPart> {
     return Promise.all(
       this.project.snapshots.store.snapshots.map(async (v1Snap) => {
+        const oldSnapshot = v1Snap.snapshot;
         if (v1Snap.thumbnail) {
           const { webpBuffer, width, height } = v1Snap.thumbnail;
           const rawThumbnailBuffer = await decodeWebp(webpBuffer, width, height);
           const deflated = toUint8Array(gzipDeflate(rawThumbnailBuffer));
-          const { snapshot: oldSnapshot, ...v1SnapRest } = v1Snap;
           return {
-            ...v1SnapRest,
+            id: v1Snap.id,
+            name: v1Snap.name,
+            description: v1Snap.description,
+            createdAt: v1Snap.createdAt,
             project: oldSnapshot,
+            snapshot: undefined,
+            projectVersion: undefined,
+            canvasSize: undefined,
             thumbnail: {
               packedBuffer: deflated,
               width,
@@ -100,10 +130,15 @@ export class V1Adapter extends ProjectAdapter<ProjectV1> {
             },
           } as ProjectSnapshot;
         } else {
-          const { snapshot: oldSnapshot, ...v1SnapRest } = v1Snap;
           return {
-            ...v1SnapRest,
+            id: v1Snap.id,
+            name: v1Snap.name,
+            description: v1Snap.description,
+            createdAt: v1Snap.createdAt,
             project: oldSnapshot,
+            snapshot: undefined,
+            projectVersion: undefined,
+            canvasSize: undefined,
             thumbnail: undefined,
           };
         }

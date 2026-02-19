@@ -32,9 +32,14 @@ export class V0Adapter extends ProjectAdapter<ProjectV0> {
   getLayers(): Layer[] {
     return this.project.layerListStore.layers.map((l) => {
       return {
-        ...l,
+        id: l.id,
+        name: l.name,
+        type: l.type,
+        opacity: l.opacity,
+        mode: l.mode,
+        enabled: l.enabled,
         cutFreeze: false,
-      } as Layer;
+      };
     });
   }
 
@@ -50,7 +55,11 @@ export class V0Adapter extends ProjectAdapter<ProjectV0> {
 
   getLayerListState(): LayerListState {
     return {
-      ...this.project.layerListStore,
+      activeLayerId: this.project.layerListStore.activeLayerId ?? '',
+      baseLayer: {
+        colorMode: this.project.layerListStore.baseLayer?.colorMode ?? 'transparent',
+        customColor: this.project.layerListStore.baseLayer?.customColor ?? undefined,
+      },
       selectionEnabled: false,
       selected: new Set(),
     };
@@ -58,8 +67,11 @@ export class V0Adapter extends ProjectAdapter<ProjectV0> {
 
   getProjectInfo(): ProjectInfo {
     return {
-      ...this.project.projectStore,
+      thumbnailPath: this.project.projectStore.thumbnailPath ?? undefined,
       lastSavedPath: undefined,
+      lastSavedAt: this.project.projectStore.lastSavedAt ?? undefined,
+      autoSnapshotEnabled: this.project.projectStore.autoSaveEnabled ?? false,
+      autoSnapshotInterval: this.project.projectStore.autoSaveInterval ?? 60,
     };
   }
 
@@ -68,17 +80,24 @@ export class V0Adapter extends ProjectAdapter<ProjectV0> {
     if (!Array.isArray(entries)) return [];
     return entries.map((entry) => {
       return {
-        ...entry,
+        id: entry.id,
+        base: {
+          width: entry.base?.width ?? 0,
+          height: entry.base?.height ?? 0,
+        },
         descriptionName: undefined,
         webpBuffer: new Uint8Array(0),
         transform: {
-          ...entry.transform,
+          x: entry.transform?.x ?? 0,
+          y: entry.transform?.y ?? 0,
+          scaleX: entry.transform?.scaleX ?? 1,
+          scaleY: entry.transform?.scaleY ?? 1,
           rotation: 0,
           flipX: false,
           flipY: false,
         },
-        opacity: entry.opacity,
-        visible: entry.visible,
+        opacity: entry.opacity ?? 1,
+        visible: entry.visible ?? true,
       };
     });
   }
@@ -90,7 +109,8 @@ export class V0Adapter extends ProjectAdapter<ProjectV0> {
 
   getImagePoolState(): ImagePoolState {
     return {
-      ...this.project.imagePoolStore,
+      selectedEntryId: this.project.imagePoolStore?.selectedEntryId ?? undefined,
+      preserveAspectRatio: this.project.imagePoolStore?.preserveAspectRatio ?? true,
     };
   }
 
