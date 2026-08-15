@@ -2,5 +2,4 @@ allowBuilds:
   '@swc/core': true
   esbuild: true
   msgpackr-extract: true
-approvedBuiltDependencies:
-  - '@swc/core'
+minimumReleaseAge: 0
