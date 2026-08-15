@@ -1,6 +1,6 @@
 {
   "name": "@sledge-pdm/core",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "private": false,
   "type": "module",
   "sideEffects": true,
